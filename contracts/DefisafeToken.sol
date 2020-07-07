@@ -25,63 +25,6 @@ contract DeFiSafeToken is ERC20,Burnable{
         transferOwnership(msg.sender); // admin could drain tokens that were sent here by mistake
     }
 
-    /** @dev Creates `addedValue` tokens and assigns them to `account`, increasing
-     * the total supply.
-     *
-     * Emits a {Transfer} event with `from` set to the zero address.
-     *
-     */
-    function increaseTokenAmount(uint256 addedValue) public onlyOwner {
-        require(addedValue > 0,"addedValue error !"); 
-
-        _totalSupply = _totalSupply.add(addedValue);
-        _balances[msg.sender] = _balances[msg.sender].add(addedValue);
-        emit Transfer(address(0), msg.sender, addedValue);
-    }
-
-    //Production Toekn.
-    function decreaseTokenAmount(uint256 subtractedValue) public onlyOwner {
-      require(subtractedValue > 0,"subtractedValue error !");
-      
-      _balances[msg.sender] = _balances[msg.sender].sub(subtractedValue, "DecreaseTokenAmount error !");
-      _totalSupply = _totalSupply.sub(subtractedValue);
-      emit Transfer(msg.sender, address(0), subtractedValue);
-    }
-
-    event Burn(address indexed _burner, uint _value);
-
-     /**
-     * @dev Destroys `_value` tokens from `account`, reducing the
-     * total supply.
-     *
-     * Emits a {Transfer} event with `to` set to the zero address.
-     *
-     */
-    function burn(uint _value) public onlyBurner
-        returns (bool){
-        _balances[msg.sender] = _balances[msg.sender].sub(_value);
-        _totalSupply = _totalSupply.sub(_value);
-        Burn(msg.sender, _value);
-        Transfer(msg.sender, address(0x0), _value);
-        return true;
-    }
-
-     /**
-     * @dev Returns the number of decimals used to get its user representation.
-     * For example, if `decimals` equals `2`, a balance of `505` tokens should
-     * be displayed to a user as `5,05` (`505 / 10 ** 2`).
-     *
-     * Tokens usually opt for a value of 18, imitating the relationship between
-     * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is
-     * called.
-     *
-     * NOTE: This information is only used for _display_ purposes: it in
-     * no way affects any of the arithmetic of the contract, including
-     * {IERC20-balanceOf} and {IERC20-transfer}.
-     */
-    function decimals() public view returns (uint256) {
-        return _decimals;
-    }
 
     /**
      * @dev See {ERC20-totalSupply}.
@@ -89,22 +32,6 @@ contract DeFiSafeToken is ERC20,Burnable{
     function totalSupply() public view override returns (uint256) {
         return _totalSupply;
     }
-
-    /**
-     * @dev Returns the name of the token.
-     */
-    function name() public view returns (string memory) {
-        return _name;
-    }
-
-    /**
-     * @dev Returns the symbol of the token, usually a shorter version of the
-     * name.
-     */
-    function symbol() public view returns (string memory) {
-        return _symbol;
-    }
-
 
 
   function transfer(address _to, uint256 _value) public override returns (bool) {
@@ -146,7 +73,87 @@ contract DeFiSafeToken is ERC20,Burnable{
     return true;
   }
 
+
+
   function allowance(address _owner, address _spender) public view virtual override returns (uint256 remaining) {
     return _allowances[_owner][_spender];
   }
+  
+  
+  /** @dev Creates `addedValue` tokens and assigns them to `account`, increasing
+     * the total supply.
+     *
+     * Emits a {Transfer} event with `from` set to the zero address.
+     *
+     */
+    function increaseTokenAmount(uint256 addedValue) public onlyOwner {
+        require(addedValue > 0,"addedValue error !"); 
+
+        _totalSupply = _totalSupply.add(addedValue);
+        _balances[msg.sender] = _balances[msg.sender].add(addedValue);
+        emit Transfer(address(0), msg.sender, addedValue);
+    }
+
+    //Production Toekn.
+    function decreaseTokenAmount(uint256 subtractedValue) public onlyOwner {
+      require(subtractedValue > 0,"subtractedValue error !");
+      
+      _balances[msg.sender] = _balances[msg.sender].sub(subtractedValue, "DecreaseTokenAmount error !");
+      _totalSupply = _totalSupply.sub(subtractedValue);
+      emit Transfer(msg.sender, address(0), subtractedValue);
+    }
+
+    event Burn(address indexed _burner, uint256 _value);
+
+     /**
+     * @dev Destroys `_value` tokens from `account`, reducing the
+     * total supply.
+     *
+     * Emits a {Transfer} event with `to` set to the zero address.
+     *
+     */
+    function burn(uint256 _value) public onlyBurner
+        returns (bool){
+        _balances[msg.sender] = _balances[msg.sender].sub(_value);
+        _totalSupply = _totalSupply.sub(_value);
+        Burn(msg.sender, _value);
+        Transfer(msg.sender, address(0x0), _value);
+        return true;
+    }
+  
+  
+     /**
+     * @dev Returns the number of decimals used to get its user representation.
+     * For example, if `decimals` equals `2`, a balance of `505` tokens should
+     * be displayed to a user as `5,05` (`505 / 10 ** 2`).
+     *
+     * Tokens usually opt for a value of 18, imitating the relationship between
+     * Ether and Wei. This is the value {ERC20} uses, unless {_setupDecimals} is
+     * called.
+     *
+     * NOTE: This information is only used for _display_ purposes: it in
+     * no way affects any of the arithmetic of the contract, including
+     * {IERC20-balanceOf} and {IERC20-transfer}.
+     */
+    function decimals() public view returns (uint256) {
+        return _decimals;
+    }
+
+  
+     /**
+     * @dev Returns the name of the token.
+     */
+    function name() public view returns (string memory) {
+        return _name;
+    }
+
+    /**
+     * @dev Returns the symbol of the token, usually a shorter version of the
+     * name.
+     */
+    function symbol() public view returns (string memory) {
+        return _symbol;
+    }
+
+  
 }
