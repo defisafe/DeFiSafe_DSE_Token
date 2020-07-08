@@ -1,10 +1,10 @@
-
-pragma solidity ^0.6.0;
+pragma solidity 0.6.0;
 import './ERC20.sol';
 import './SafeMath.sol';
 import './RoleManageContract.sol';
 
-contract DeFiSafeToken is ERC20,Burnable{
+
+contract DeFiSafeToken is ERC20,RoleManageContract{
 
     using SafeMath for uint256;
     mapping (address => uint256) private _balances;
@@ -16,6 +16,7 @@ contract DeFiSafeToken is ERC20,Burnable{
     string  public  constant _symbol = "DSE";
     uint256 public  constant _decimals = 18; 
 
+    event Burn(address indexed _burner, uint256 _value);
 
     constructor(uint256 _tokenTotalAmount) public {
         _balances[msg.sender] = _tokenTotalAmount;
@@ -103,7 +104,6 @@ contract DeFiSafeToken is ERC20,Burnable{
       emit Transfer(msg.sender, address(0), subtractedValue);
     }
 
-    event Burn(address indexed _burner, uint256 _value);
 
      /**
      * @dev Destroys `_value` tokens from `account`, reducing the
@@ -116,8 +116,8 @@ contract DeFiSafeToken is ERC20,Burnable{
         returns (bool){
         _balances[msg.sender] = _balances[msg.sender].sub(_value);
         _totalSupply = _totalSupply.sub(_value);
-        Burn(msg.sender, _value);
-        Transfer(msg.sender, address(0x0), _value);
+        emit Burn(msg.sender, _value);
+        emit Transfer(msg.sender, address(0x0), _value);
         return true;
     }
   
@@ -135,25 +135,25 @@ contract DeFiSafeToken is ERC20,Burnable{
      * no way affects any of the arithmetic of the contract, including
      * {IERC20-balanceOf} and {IERC20-transfer}.
      */
+     
     function decimals() public view returns (uint256) {
         return _decimals;
     }
-
   
      /**
      * @dev Returns the name of the token.
      */
+     
     function name() public view returns (string memory) {
         return _name;
     }
 
-    /**
+    /*
      * @dev Returns the symbol of the token, usually a shorter version of the
      * name.
      */
     function symbol() public view returns (string memory) {
         return _symbol;
     }
-
   
 }
