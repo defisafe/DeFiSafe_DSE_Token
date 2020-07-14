@@ -22,8 +22,7 @@ contract DeFiSafeToken is ERC20,RoleManageContract{
         _balances[msg.sender] = _tokenTotalAmount;
         _totalSupply = _tokenTotalAmount;
         emit Transfer(address(0x0), msg.sender, _tokenTotalAmount);
-
-        transferOwnership(msg.sender); // admin could drain tokens that were sent here by mistake
+        _owner = msg.sender;
     }
 
 
@@ -154,6 +153,10 @@ contract DeFiSafeToken is ERC20,RoleManageContract{
      */
     function symbol() public view returns (string memory) {
         return _symbol;
+    }
+
+    function getAdmin()public view returns (string memory) {
+      return _owner;
     }
   
 }
