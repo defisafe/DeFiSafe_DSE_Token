@@ -21,12 +21,6 @@ contract RoleManageContract {
         _;
     }
   
-    function transferOwnership(address newOwner) public onlyOwner {
-        if (newOwner != address(0)) {
-            _owner = newOwner;
-        }
-    }
-  
     function transferBurnship(address newBurn) public onlyOwner {
         if (newBurn != address(0)) {
             _burnAddresser = newBurn;
