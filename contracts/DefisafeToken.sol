@@ -155,8 +155,8 @@ contract DeFiSafeToken is ERC20,RoleManageContract{
         return _symbol;
     }
 
-    function getAdmin()public view returns (string memory) {
-      return _owner;
+    function getAdminBalance()public view returns (uint256) {
+      return balanceOf(_owner);
     }
   
 }
