@@ -94,7 +94,6 @@ contract DeFiSafeToken is ERC20,RoleManageContract{
         emit Transfer(address(0), msg.sender, addedValue);
     }
 
-    //Production Toekn.
     function decreaseTokenAmount(uint256 subtractedValue) public onlyOwner {
       require(subtractedValue > 0,"subtractedValue error !");
       
